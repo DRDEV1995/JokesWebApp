@@ -25,6 +25,17 @@ namespace JokesWebApp.Controllers
             return View(await _context.Joke.ToListAsync());
         }
 
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return View();
+        }
+
+        //Through the SearchPhrase Keyword the program is now able to properly filter the search component. 
+        public async Task<IActionResult> ShowSearchResults(String SearchPhrase)
+        {
+            return View("Index", await _context.Joke.Where(j => j.JokeQuestion.Contains(SearchPhrase)).ToListAsync());
+        }
+
         // GET: Jokes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -44,6 +55,7 @@ namespace JokesWebApp.Controllers
         }
 
         // GET: Jokes/Create
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public IActionResult Create()
         {
             return View();
@@ -64,7 +76,7 @@ namespace JokesWebApp.Controllers
             }
             return View(joke);
         }
-
+        [Microsoft.AspNetCore.Authorization.Authorize]
         // GET: Jokes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -117,6 +129,7 @@ namespace JokesWebApp.Controllers
         }
 
         // GET: Jokes/Delete/5
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
